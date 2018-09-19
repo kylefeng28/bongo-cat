@@ -6,31 +6,31 @@ const InstrumentEnum = {
 	MARIMBA: 5,
 };
 const KeyEnum = {
-	'A': 1,
-	'D': 0,
-	'1': 1,
-	'2': 2,
-	'3': 3,
-	'4': 4,
-	'5': 5,
-	'6': 6,
-	'7': 7,
-	'8': 8,
-	'9': 9,
-	'0': 0,
-	' ': 0,
-	'C': 1,
-	'Q': 1,
-	'W': 2,
-	'E': 3,
-	'R': 4,
-	'T': 5,
-	'Y': 6,
-	'Z': 6,
-	'U': 7,
-	'I': 8,
-	'O': 9,
-	'P': 0,
+	'A': 78,
+	'D': 80,
+	'1': 'C4',
+	'2': 'C#4',
+	'3': 'D4',
+	'4': 'D#4',
+	'5': 'E4',
+	'6': 'F4',
+	'7': 'F#4',
+	'8': 'G4',
+	'9': 'G#4',
+	'0': 'A4',
+	' ': 78,
+	'C': 78,
+	'Q': 'C4',
+	'W': 'C#4',
+	'E': 'D4',
+	'R': 'D#4',
+	'T': 'E4',
+	'Y': 'F4',
+	'Z': 'F4',
+	'U': 'F#4',
+	'I': 'G4',
+	'O': 'G#4',
+	'P': 'A4',
 };
 const InstrumentPerKeyEnum = {
 	'A': InstrumentEnum.BONGO,
@@ -65,33 +65,6 @@ const ClickKeyEquivalentEnum = {
 	'3': 'D',
 };
 let pressed = [];
-$(document).ready(function() {
-	lowLag.init();
-	lowLag.load(['samples/bongo0.mp3',    'samples/bongo0.wav'],    'bongo0');
-	lowLag.load(['samples/bongo1.mp3',    'samples/bongo1.wav'],    'bongo1');
-	lowLag.load(['samples/keyboard1.mp3', 'samples/keyboard1.wav'], 'keyboard1');
-	lowLag.load(['samples/keyboard2.mp3', 'samples/keyboard2.wav'], 'keyboard2');
-	lowLag.load(['samples/keyboard3.mp3', 'samples/keyboard3.wav'], 'keyboard3');
-	lowLag.load(['samples/keyboard4.mp3', 'samples/keyboard4.wav'], 'keyboard4');
-	lowLag.load(['samples/keyboard5.mp3', 'samples/keyboard5.wav'], 'keyboard5');
-	lowLag.load(['samples/keyboard6.mp3', 'samples/keyboard6.wav'], 'keyboard6');
-	lowLag.load(['samples/keyboard7.mp3', 'samples/keyboard7.wav'], 'keyboard7');
-	lowLag.load(['samples/keyboard8.mp3', 'samples/keyboard8.wav'], 'keyboard8');
-	lowLag.load(['samples/keyboard9.mp3', 'samples/keyboard9.wav'], 'keyboard9');
-	lowLag.load(['samples/keyboard0.mp3', 'samples/keyboard0.wav'], 'keyboard0');
-	lowLag.load(['samples/meow0.mp3',     'samples/meow0.wav'],     'meow0');
-	lowLag.load(['samples/cymbal1.mp3',   'samples/cymbal1.wav'],   'cymbal1');
-	lowLag.load(['samples/marimba1.mp3',  'samples/marimba1.wav'],  'marimba1');
-	lowLag.load(['samples/marimba2.mp3',  'samples/marimba2.wav'],  'marimba2');
-	lowLag.load(['samples/marimba3.mp3',  'samples/marimba3.wav'],  'marimba3');
-	lowLag.load(['samples/marimba4.mp3',  'samples/marimba4.wav'],  'marimba4');
-	lowLag.load(['samples/marimba5.mp3',  'samples/marimba5.wav'],  'marimba5');
-	lowLag.load(['samples/marimba6.mp3',  'samples/marimba6.wav'],  'marimba6');
-	lowLag.load(['samples/marimba7.mp3',  'samples/marimba7.wav'],  'marimba7');
-	lowLag.load(['samples/marimba8.mp3',  'samples/marimba8.wav'],  'marimba8');
-	lowLag.load(['samples/marimba9.mp3',  'samples/marimba9.wav'],  'marimba9');
-	lowLag.load(['samples/marimba0.mp3',  'samples/marimba0.wav'],  'marimba0');
-});
 
 $.bindMidiInput = function(inputDevice) {
 	console.log('Midi input device connected');
@@ -105,13 +78,12 @@ $.bindMidiInput = function(inputDevice) {
 	});
 	inputDevice.addListener('noteon', 'all', (event) => {
 		console.log('noteon', event.note.number);
-		$.play(InstrumentEnum.KEYBOARD, 0, true);
-		// this.emit('keyDown', event.note.number, event.velocity);
+		$.play(InstrumentEnum.KEYBOARD, event.note.name + event.note.octave, true);
 	});
 	inputDevice.addListener('noteoff', 'all', (event) => {
 		console.log('noteoff');
-		$.play(InstrumentEnum.KEYBOARD, 0, false);
-		// this.emit('keyUp', event.note.number, event.velocity);
+		samples.KEYBOARD.triggerRelease(event.note.number);
+		$.play(InstrumentEnum.KEYBOARD, event.note.name + event.note.octave, false);
 	});
 
 	inputDevice.addListener('controlchange', 'all', (event) => {
@@ -121,53 +93,55 @@ $.bindMidiInput = function(inputDevice) {
 	});
 };
 
-const sampleMapping = {
-	// bongo: {
-	// 	'C4': 'bongo0.wav',
-	// 	'C5': 'bongo1.wav',
-	// },
-
-	keyboard: {
-		48: 'keyboard1.wav',
-		49: 'keyboard2.wav',
-		50: 'keyboard3.wav',
-		51: 'keyboard4.wav',
-		52: 'keyboard5.wav',
-		53: 'keyboard6.wav',
-		54: 'keyboard7.wav',
-		55: 'keyboard8.wav',
-		56: 'keyboard9.wav',
-		57: 'keyboard0.wav',
+const SampleMapping = {
+	BONGO: {
+		78: 'bongo0.wav',
+		80: 'bongo1.wav',
 	},
 
-	/*
-	meow: {
-		48: 'meow0.wav',
+	KEYBOARD: {
+		'C4' : 'keyboard1.wav',
+		'C#4': 'keyboard2.wav',
+		'D4' : 'keyboard3.wav',
+		'D#4': 'keyboard4.wav',
+		'E4' : 'keyboard5.wav',
+		'F4' : 'keyboard6.wav',
+		'F#4': 'keyboard7.wav',
+		'G4' : 'keyboard8.wav',
+		'G#4': 'keyboard9.wav',
+		'A4' : 'keyboard0.wav',
 	},
-	cymbal: {
-		48: 'cymbal1.wav',
-	},
-	*/
 
-	marimba: {
-		48: 'marimba1.wav',
-		49: 'marimba2.wav',
-		50: 'marimba3.wav',
-		51: 'marimba4.wav',
-		52: 'marimba5.wav',
-		53: 'marimba6.wav',
-		54: 'marimba7.wav',
-		55: 'marimba8.wav',
-		56: 'marimba9.wav',
-		57: 'marimba0.wav',
+	MEOW: {
+		78: 'meow0.wav',
+	},
+	CYMBAL: {
+		78: 'cymbal1.wav',
+	},
+
+	MARIMBA: {
+		'C4' : 'marimba1.wav',
+		'C#4': 'marimba2.wav',
+		'D4' : 'marimba3.wav',
+		'D#4': 'marimba4.wav',
+		'E4' : 'marimba5.wav',
+		'F4' : 'marimba6.wav',
+		'F#4': 'marimba7.wav',
+		'G4' : 'marimba8.wav',
+		'G#4': 'marimba9.wav',
+		'A4' : 'marimba0.wav',
 	},
 };
-let samples;
+let samples = {};
 $(document).ready(function() {
 	// Initialize Tone.js
-	samples = new Tone.Sampler(sampleMapping, () => {
-		console.log('Samples loaded');
-	});
+	for (instrument in SampleMapping) {
+		samples[instrument] = new Tone.Sampler(SampleMapping[instrument], {
+			release: 1,
+			baseUrl: './samples/',
+			onload: () => { console.log(instrument + 'Samples loaded'); }
+		}).toMaster();
+	}
 
 	// Initialize WebMidi
 	// https://github.com/tambien/Piano/blob/master/Demo.js
@@ -197,10 +171,14 @@ Array.prototype.remove = function(el) {
 $.wait = function(callback, ms) {
 	return window.setTimeout(callback, ms);
 };
+let lastPaw = 0;
 $.play = function(instrument, key, state) {
-	let instrumentName = Object.keys(InstrumentEnum).find(k => InstrumentEnum[k] === instrument).toLowerCase();
-	let commonKey = KeyEnum[key];
-	let paw = (instrument == InstrumentEnum.BONGO ? key : key <= 5 && key != 0 ? 0 : 1);
+	let instrumentName = Object.keys(InstrumentEnum).find(k => InstrumentEnum[k] === instrument);
+	// let commonKey = KeyEnum[key];
+	let commonKey = key;
+	// let paw = (instrument == InstrumentEnum.BONGO ? key : key <= 5 && key != 0 ? 0 : 1);
+	let paw = state ? +!lastPaw : lastPaw;
+	lastPaw = paw;
 	let id = (instrument == InstrumentEnum.MEOW ? '#mouth' : '#' + (paw == 0 ? 'l' : 'r') + 'paw');
 	if (state == true) {
 		if (jQuery.inArray(commonKey, pressed) !== -1) {
@@ -210,15 +188,18 @@ $.play = function(instrument, key, state) {
 		}
 		if (instrument != InstrumentEnum.MEOW) {
 			$('.instrument').each(function(index) {
-				if ($(this).attr('id') === instrumentName) {
+				if ($(this).attr('id') === instrumentName.toLowerCase()) {
 					$(this).css('visibility', 'visible');
 				} else {
 					$(this).css('visibility', 'hidden');
 				}
 			});
 		}
-		$.sound(instrumentName + key);
+		console.log(instrumentName);
+		samples[instrumentName].triggerAttack(commonKey);
+		// $.sound(instrumentName + key);
 	} else {
+		samples[instrumentName].triggerRelease(commonKey);
 		pressed.remove(commonKey);
 	}
 	if (instrument == InstrumentEnum.MEOW) {
@@ -227,9 +208,7 @@ $.play = function(instrument, key, state) {
 		$(id).css('background-image', 'url("./' + (paw == 0 ? 'l' : 'r') + (state === true ? '2' : '1') + '.png")');
 	}
 };
-$.sound = function(filename) {
-	lowLag.play(filename);
-};
+
 $(document).bind('contextmenu', function(e) {
 	e.preventDefault();
 });
