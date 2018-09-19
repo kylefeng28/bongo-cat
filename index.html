@@ -1,0 +1,73 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Bongo Cat</title>
+		<meta name="description" content="Hit the bongos like Bongo Cat!">
+		<meta property="og:title" content="Bongo Cat">
+		<meta property="og:type" content="website">
+		<meta property="og:image" content="https://bongo.cat/thumbnail.png">
+		<meta property="og:url" content="https://bongo.cat">
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:url" content="https://bongo.cat">
+		<meta name="twitter:title" content="Bongo Cat">
+		<meta name="twitter:description" content="Hit the bongos like Bongo Cat!">
+		<meta name="twitter:image" content="https://bongo.cat/thumbnail.png">
+		<meta name="twitter:image:alt" content="A cat hitting bongos">
+		<meta name="twitter:creator" content="Externalizable">
+		<link rel="preload" href="./bongo.png" as="image">
+		<link rel="preload" href="./keyboard.png" as="image">
+		<link rel="preload" href="./cymbal.png" as="image">
+		<link rel="preload" href="./marimba.png" as="image">
+		<link rel="preload" href="./m1.png" as="image">
+		<link rel="preload" href="./m2.png" as="image">
+		<link rel="preload" href="./l1.png" as="image">
+		<link rel="preload" href="./l2.png" as="image">
+		<link rel="preload" href="./r1.png" as="image">
+		<link rel="preload" href="./r2.png" as="image">
+		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+		<link href="./style.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://lowlag.alienbill.com/lowLag.js"></script>
+		<script src="./sm2/js/soundmanager2-jsmin.js"></script>
+		<script src="./core.js"></script>
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120277085-2"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-120277085-2');
+		</script>
+	</head>
+	<body>
+		<header>
+			<b>bongos</b>: left- & right-click / [A] & [D]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>cymbal</b>: [C]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>meow</b>: [SPACE]<br>
+			<b>piano</b>: [0] - [9]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>marimba</b>: press [Q][W][E][R][T][Y][U][I][O][P]<br>
+		</header>
+		<div class="focus instrument" id="bongo"></div>
+		<div class="focus instrument" id="keyboard"></div>
+		<div class="focus instrument" id="cymbal"></div>
+		<div class="focus instrument" id="marimba"></div>
+		<div class="focus" id="mouth"></div>
+		<div class="focus" id="lpaw"></div>
+		<div class="focus" id="rpaw"></div>
+		<div class="tap" id="bongo-left"><span>A</span></div>
+		<div class="tap" id="bongo-right"><span>D</span></div>
+		<div class="tap" id="cymbal-left"><span>C</span></div>
+		<div class="tap" id="piano-keys">
+			<div class="tap minitap" id="key1"><span>1</span></div><div class="tap minitap" id="key2"><span>2</span></div><div class="tap minitap" id="key3"><span>3</span></div><div class="tap minitap" id="key4"><span>4</span></div><div class="tap minitap" id="key5"><span>5</span></div><div class="tap minitap" id="key6"><span>6</span></div><div class="tap minitap" id="key7"><span>7</span></div><div class="tap minitap" id="key8"><span>8</span></div><div class="tap minitap" id="key9"><span>9</span></div><div class="tap minitap" id="key0"><span>0</span></div> </div>
+		<div class="tap" id="marimba-keys">
+			<div class="tap minitap" id="keyQ"><span>Q</span></div><div class="tap minitap" id="keyW"><span>W</span></div><div class="tap minitap" id="keyE"><span>E</span></div><div class="tap minitap" id="keyR"><span>R</span></div><div class="tap minitap" id="keyT"><span>T</span></div><div class="tap minitap" id="keyY"><span>Y</span></div><div class="tap minitap" id="keyU"><span>U</span></div><div class="tap minitap" id="keyI"><span>I</span></div><div class="tap minitap" id="keyO"><span>O</span></div><div class="tap minitap" id="keyP"><span>P</span></div> </div>
+		<div class="tap" id="meow">
+			<span>SPACE</span>
+		</div>
+		<img src="./l2.png" class="hidden" />
+		<img src="./r2.png" class="hidden" />
+		<img src="./m2.png" class="hidden" />
+		<footer>
+			hold [CTRL] + [SHIFT] + [R] if your cat looks weird<br>
+			cat drawing courtesy of <a href="https://twitter.com/StrayRogue" target="_blank">@StrayRogue</a> (<a href="https://ko-fi.com/arogue" target="_blank">donate</a>) |
+			bongo idea by <a href="https://twitter.com/DitzyFlama" target="_blank">@DitzyFlama</a> |
+			website by <a href="https://twitter.com/Externalizable" target="_blank">@Externalizable</a>
+		</footer>
+	</body>
+</html>
