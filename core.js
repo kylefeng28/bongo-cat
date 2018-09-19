@@ -6,8 +6,8 @@ const InstrumentEnum = {
 	MARIMBA: 5,
 };
 const KeyEnum = {
-	'A': 78,
-	'D': 80,
+	'A': 1,
+	'D': 0,
 	'1': 'C4',
 	'2': 'C#4',
 	'3': 'D4',
@@ -18,8 +18,8 @@ const KeyEnum = {
 	'8': 'G4',
 	'9': 'G#4',
 	'0': 'A4',
-	' ': 78,
-	'C': 78,
+	' ': 0,
+	'C': 1,
 	'Q': 'C4',
 	'W': 'C#4',
 	'E': 'D4',
@@ -94,11 +94,6 @@ $.bindMidiInput = function(inputDevice) {
 };
 
 const SampleMapping = {
-	BONGO: {
-		78: 'bongo0.wav',
-		80: 'bongo1.wav',
-	},
-
 	KEYBOARD: {
 		'C4' : 'keyboard1.wav',
 		'C#4': 'keyboard2.wav',
@@ -110,13 +105,6 @@ const SampleMapping = {
 		'G4' : 'keyboard8.wav',
 		'G#4': 'keyboard9.wav',
 		'A4' : 'keyboard0.wav',
-	},
-
-	MEOW: {
-		78: 'meow0.wav',
-	},
-	CYMBAL: {
-		78: 'cymbal1.wav',
 	},
 
 	MARIMBA: {
@@ -131,6 +119,17 @@ const SampleMapping = {
 		'G#4': 'marimba9.wav',
 		'A4' : 'marimba0.wav',
 	},
+
+	BONGO: {
+		0: 'bongo0.wav',
+		1: 'bongo1.wav',
+	},
+	MEOW: {
+		0: 'meow0.wav',
+	},
+	CYMBAL: {
+		1: 'cymbal1.wav',
+	}
 };
 
 let samples = {};
@@ -141,11 +140,33 @@ const mario = 'data:audio/midi;base64,TVRoZAAAAAYAAQAMAHhNVHJrAAAAGQD/WAQEAhgIAP
 $(document).ready(function() {
 	// Initialize Tone.js
 	for (instrument in SampleMapping) {
-		samples[instrument] = new Tone.Sampler(SampleMapping[instrument], {
-			release: 1,
-			baseUrl: './samples/',
-			onload: () => { console.log(instrument + 'Samples loaded'); }
-		}).toMaster();
+		let onload = ((instrument) => console.log(instrument + ' samples loaded'))(instrument);
+
+		// Melodic instruments
+		if ([ 'KEYBOARD', 'MARIMBA' ].includes(instrument)) {
+			samples[instrument] = new Tone.Sampler(SampleMapping[instrument], {
+				release: 1,
+				baseUrl: './samples/',
+				onload: onload,
+			}).toMaster();
+		}
+		// Percussive / samples
+		else {
+			// Make a proxy object that behaves like Tone.Sampler
+			samples[instrument] = {};
+			for (sampleNumber in SampleMapping[instrument]) {
+				samples[instrument][sampleNumber] = new Tone.Player('./samples/' + SampleMapping[instrument][sampleNumber], {
+					onload: onload,
+				}).toMaster();
+			}
+
+			samples[instrument].triggerAttack = ((instrument) => (key) => {
+				instrument[key].start();
+			})(samples[instrument]);
+			samples[instrument].triggerRelease = ((instrument) => (key) => {
+				// instrument[key].stop();
+			})(samples[instrument]);
+		}
 	}
 
 	// Initialize WebMidi
@@ -180,11 +201,11 @@ $(document).ready(function() {
 			let paw = +!lastPaw;
 			lastPaw = paw;
 			if (paw) {
-				$('#lpaw').css('background-image', 'url("./l2.png"');
-				$('#rpaw').css('background-image', 'url("./r1.png"');
+				$.paw('l', true);
+				$.paw('r', false);
 			} else {
-				$('#lpaw').css('background-image', 'url("./l1.png"');
-				$('#rpaw').css('background-image', 'url("./r2.png"');
+				$.paw('l', false);
+				$.paw('r', true);
 			}
 		}
 	});
@@ -194,6 +215,10 @@ $(document).ready(function() {
 		midiPlayer.play();
 	}, 3000);
 });
+
+$.paw = function(dir, down) {
+	$('#' + dir + 'paw').css('background-image', 'url("./' + dir + (down ? 2 : 1) + '.png"');
+};
 
 Array.prototype.remove = function(el) {
 	return this.splice(this.indexOf(el), 1);
