@@ -67,30 +67,30 @@ const ClickKeyEquivalentEnum = {
 let pressed = [];
 $(document).ready(function() {
 	lowLag.init();
-	lowLag.load(['bongo0.mp3', 'bongo0.wav'], 'bongo0');
-	lowLag.load(['bongo1.mp3', 'bongo1.wav'], 'bongo1');
-	lowLag.load(['keyboard1.mp3', 'keyboard1.wav'], 'keyboard1');
-	lowLag.load(['keyboard2.mp3', 'keyboard2.wav'], 'keyboard2');
-	lowLag.load(['keyboard3.mp3', 'keyboard3.wav'], 'keyboard3');
-	lowLag.load(['keyboard4.mp3', 'keyboard4.wav'], 'keyboard4');
-	lowLag.load(['keyboard5.mp3', 'keyboard5.wav'], 'keyboard5');
-	lowLag.load(['keyboard6.mp3', 'keyboard6.wav'], 'keyboard6');
-	lowLag.load(['keyboard7.mp3', 'keyboard7.wav'], 'keyboard7');
-	lowLag.load(['keyboard8.mp3', 'keyboard8.wav'], 'keyboard8');
-	lowLag.load(['keyboard9.mp3', 'keyboard9.wav'], 'keyboard9');
-	lowLag.load(['keyboard0.mp3', 'keyboard0.wav'], 'keyboard0');
-	lowLag.load(['meow0.mp3', 'meow0.wav'], 'meow0');
-	lowLag.load(['cymbal1.mp3', 'cymbal1.wav'], 'cymbal1');
-	lowLag.load(['marimba1.mp3', 'marimba1.wav'], 'marimba1');
-	lowLag.load(['marimba2.mp3', 'marimba2.wav'], 'marimba2');
-	lowLag.load(['marimba3.mp3', 'marimba3.wav'], 'marimba3');
-	lowLag.load(['marimba4.mp3', 'marimba4.wav'], 'marimba4');
-	lowLag.load(['marimba5.mp3', 'marimba5.wav'], 'marimba5');
-	lowLag.load(['marimba6.mp3', 'marimba6.wav'], 'marimba6');
-	lowLag.load(['marimba7.mp3', 'marimba7.wav'], 'marimba7');
-	lowLag.load(['marimba8.mp3', 'marimba8.wav'], 'marimba8');
-	lowLag.load(['marimba9.mp3', 'marimba9.wav'], 'marimba9');
-	lowLag.load(['marimba0.mp3', 'marimba0.wav'], 'marimba0');
+	lowLag.load(['samples/bongo0.mp3',    'samples/bongo0.wav'],    'bongo0');
+	lowLag.load(['samples/bongo1.mp3',    'samples/bongo1.wav'],    'bongo1');
+	lowLag.load(['samples/keyboard1.mp3', 'samples/keyboard1.wav'], 'keyboard1');
+	lowLag.load(['samples/keyboard2.mp3', 'samples/keyboard2.wav'], 'keyboard2');
+	lowLag.load(['samples/keyboard3.mp3', 'samples/keyboard3.wav'], 'keyboard3');
+	lowLag.load(['samples/keyboard4.mp3', 'samples/keyboard4.wav'], 'keyboard4');
+	lowLag.load(['samples/keyboard5.mp3', 'samples/keyboard5.wav'], 'keyboard5');
+	lowLag.load(['samples/keyboard6.mp3', 'samples/keyboard6.wav'], 'keyboard6');
+	lowLag.load(['samples/keyboard7.mp3', 'samples/keyboard7.wav'], 'keyboard7');
+	lowLag.load(['samples/keyboard8.mp3', 'samples/keyboard8.wav'], 'keyboard8');
+	lowLag.load(['samples/keyboard9.mp3', 'samples/keyboard9.wav'], 'keyboard9');
+	lowLag.load(['samples/keyboard0.mp3', 'samples/keyboard0.wav'], 'keyboard0');
+	lowLag.load(['samples/meow0.mp3',     'samples/meow0.wav'],     'meow0');
+	lowLag.load(['samples/cymbal1.mp3',   'samples/cymbal1.wav'],   'cymbal1');
+	lowLag.load(['samples/marimba1.mp3',  'samples/marimba1.wav'],  'marimba1');
+	lowLag.load(['samples/marimba2.mp3',  'samples/marimba2.wav'],  'marimba2');
+	lowLag.load(['samples/marimba3.mp3',  'samples/marimba3.wav'],  'marimba3');
+	lowLag.load(['samples/marimba4.mp3',  'samples/marimba4.wav'],  'marimba4');
+	lowLag.load(['samples/marimba5.mp3',  'samples/marimba5.wav'],  'marimba5');
+	lowLag.load(['samples/marimba6.mp3',  'samples/marimba6.wav'],  'marimba6');
+	lowLag.load(['samples/marimba7.mp3',  'samples/marimba7.wav'],  'marimba7');
+	lowLag.load(['samples/marimba8.mp3',  'samples/marimba8.wav'],  'marimba8');
+	lowLag.load(['samples/marimba9.mp3',  'samples/marimba9.wav'],  'marimba9');
+	lowLag.load(['samples/marimba0.mp3',  'samples/marimba0.wav'],  'marimba0');
 });
 
 $.bindMidiInput = function(inputDevice) {
@@ -105,12 +105,13 @@ $.bindMidiInput = function(inputDevice) {
 	});
 	inputDevice.addListener('noteon', 'all', (event) => {
 		console.log('noteon', event.note.number);
+		$.play(InstrumentEnum.KEYBOARD, 0, true);
 		// this.emit('keyDown', event.note.number, event.velocity);
 	});
 	inputDevice.addListener('noteoff', 'all', (event) => {
 		console.log('noteoff');
+		$.play(InstrumentEnum.KEYBOARD, 0, false);
 		// this.emit('keyUp', event.note.number, event.velocity);
-		// keyboard, 0, true
 	});
 
 	inputDevice.addListener('controlchange', 'all', (event) => {
@@ -120,7 +121,54 @@ $.bindMidiInput = function(inputDevice) {
 	});
 };
 
+const sampleMapping = {
+	// bongo: {
+	// 	'C4': 'bongo0.wav',
+	// 	'C5': 'bongo1.wav',
+	// },
+
+	keyboard: {
+		48: 'keyboard1.wav',
+		49: 'keyboard2.wav',
+		50: 'keyboard3.wav',
+		51: 'keyboard4.wav',
+		52: 'keyboard5.wav',
+		53: 'keyboard6.wav',
+		54: 'keyboard7.wav',
+		55: 'keyboard8.wav',
+		56: 'keyboard9.wav',
+		57: 'keyboard0.wav',
+	},
+
+	/*
+	meow: {
+		48: 'meow0.wav',
+	},
+	cymbal: {
+		48: 'cymbal1.wav',
+	},
+	*/
+
+	marimba: {
+		48: 'marimba1.wav',
+		49: 'marimba2.wav',
+		50: 'marimba3.wav',
+		51: 'marimba4.wav',
+		52: 'marimba5.wav',
+		53: 'marimba6.wav',
+		54: 'marimba7.wav',
+		55: 'marimba8.wav',
+		56: 'marimba9.wav',
+		57: 'marimba0.wav',
+	},
+};
+let samples;
 $(document).ready(function() {
+	// Initialize Tone.js
+	samples = new Tone.Sampler(sampleMapping, () => {
+		console.log('Samples loaded');
+	});
+
 	// Initialize WebMidi
 	// https://github.com/tambien/Piano/blob/master/Demo.js
 	WebMidi.enable((err) => {
