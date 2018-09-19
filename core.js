@@ -210,11 +210,13 @@ $(document).ready(function() {
 		}
 	});
 
-	$.wait(() => {
-		midiPlayer.loadDataUri(mario);
-		midiPlayer.play();
-	}, 3000);
+	$.wait(() => $.playMidi(mario), 3000);
 });
+
+$.playMidi = function(midiDataUri) {
+	midiPlayer.loadDataUri(midiDataUri);
+	midiPlayer.play();
+};
 
 $.paw = function(dir, down) {
 	$('#' + dir + 'paw').css('background-image', 'url("./' + dir + (down ? 2 : 1) + '.png"');
@@ -361,6 +363,10 @@ $(document).ready(function() {
 		});
 		$('#meow').css('visibility', 'visible').on('touchstart', function(e) {
 			$.tap(e, ' ');
+		});
+
+		$('#play-midi').css('visibility', 'visible').on('touchstart', function(e) {
+			$.playMidi(mario);
 		});
 	}
 });
