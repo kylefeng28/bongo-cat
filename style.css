@@ -118,3 +118,45 @@ footer {
 	left:50%;
 	transform:translate(-50%,0%)
 }
+
+/* Mini bongo cats */
+#midi-channels {
+	position:relative;
+	width:800px;
+	height:450px;
+}
+.mini-cat {
+	position:relative;
+	width:80px;
+	height:80px
+}
+.mini-cat > * {
+	position:absolute;
+	width:80px;
+	height:80px;
+	/*background-size:cover;*/
+	background-size:150%;
+	background-position:center;
+	background-repeat:no-repeat
+}
+.mini-label {
+	position:absolute;
+	top:-18px;
+	left:50%;
+	transform:translateX(-50%);
+	font-size:11px;
+	font-weight:bold;
+	white-space:nowrap
+}
+.mini-bongo {
+	background-image:url(./bongo.png);
+}
+.mini-lpaw {
+	background-image:url(./l1.png)
+}
+.mini-rpaw {
+	background-image:url(./r1.png)
+}
+.mini-mouth {
+	background-image:url(./m1.png)
+}
