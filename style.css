@@ -151,6 +151,12 @@ footer {
 .mini-bongo {
 	background-image:url(./bongo.png);
 }
+.mini-keyboard {
+	background-image:url(./keyboard.png);
+}
+.mini-marimba {
+	background-image:url(./marimba.png);
+}
 .mini-lpaw {
 	background-image:url(./l1.png)
 }
