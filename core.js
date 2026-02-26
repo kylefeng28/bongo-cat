@@ -305,7 +305,15 @@ $(document).ready(function() {
 
 	$.wait(() => {
 		console.log('BONGO CAT TIME');
-		$.loadMidiFromUrl('./midi/smw_title.mid');
+		const urlParams = new URLSearchParams(window.location.search);
+		let midiFilePath = urlParams.get('midi');
+		if (midiFilePath) {
+			midiFilePath = './midi/' + midiFilePath;
+		} else {
+			midiFilePath = './midi/smw_title.mid';
+		}
+		$('#midi-selector').val(midiFilePath);
+		$.loadMidiFromUrl(midiFilePath);
 		$.playMidi();
 	}, 1000);
 });
@@ -573,8 +581,12 @@ $(document).ready(function() {
 	$('#midi-selector').on('change', function(e) {
 		const path = e.target.value;
 		if (path) {
+			const url = new URL(window.location);
 			selectedMidiFile = path.split('/').pop();
+			url.searchParams.set('midi', selectedMidiFile);
+			window.history.pushState({}, '', url);
 			$.loadMidiFromUrl(path);
+			$.playMidi();
 		}
 	});
 });
