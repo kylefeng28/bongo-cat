@@ -7,8 +7,12 @@ Fork of [bongo.cat](http://bongo.cat) with MIDI features! You might recognize th
 ![](https://bongo.cat/meta/thumbnail.png)
 
 Features / differences from the original:
+- Drop and drop a MIDI file to play it! (and watch the band of bongo cats)
 - Web MIDI to support plugging in a MIDI keyboard/device
-- Uses [Tone.js](https://tonejs.github.io/) instead of [lowLag.js](https://lowlag.alienbill.com/) and [SoundManager2(https://www.schillmania.com/projects/soundmanager2/)
+- Uses [Tone.js](https://tonejs.github.io/) instead of [lowLag.js](https://lowlag.alienbill.com/) and [SoundManager2](https://www.schillmania.com/projects/soundmanager2/)
+
+### Screenshot
+![](./screenshot.png)
 
 ### Credits
 - [@Externalizable](https://github.com/Externalizable) for original repo ([Externalizable/bongo.cat](https://github.com/Externalizable/bongo.cat))

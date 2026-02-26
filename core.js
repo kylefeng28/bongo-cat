@@ -219,6 +219,7 @@ $(document).ready(function() {
 	});
 
 	let lastPaw = 0;
+	let lastTick = 0;
 	midiPlayer = new MidiPlayer.Player((event) => {
 		const channel = event.track;
 
@@ -258,16 +259,20 @@ $(document).ready(function() {
 			samples[instrument].triggerRelease(event.noteName);
 			samples[instrument].triggerAttack(event.noteName);
 
-			// Main cat - swap paws and show instrument
-			let paw = +!lastPaw;
-			lastPaw = paw;
-			if (paw) {
-				$.paw('l', true);
-				$.paw('r', false);
-			} else {
-				$.paw('l', false);
-				$.paw('r', true);
+			// Main cat - swap paws only on separate ticks
+			// (this avoids paws not swapping if an even number of instruments/tracks play on the same tick)
+			if (lastTick != event.tick) {
+				let paw = +!lastPaw;
+				lastPaw = paw;
+				if (paw) {
+					$.paw('l', true);
+					$.paw('r', false);
+				} else {
+					$.paw('l', false);
+					$.paw('r', true);
+				}
 			}
+			lastTick = event.tick;
 
 			// Mini cats (1 cat per channel), swap paws on a per-channel basis
 			if (!channelPaws[channel]) {
