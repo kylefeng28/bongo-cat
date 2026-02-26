@@ -8,6 +8,12 @@ body {
 	-webkit-user-select:none;
 	user-select:none
 }
+#midi-selector {
+	margin-top:10px;
+	padding:5px;
+	font-size:14px;
+	font-family:lato,sans-serif
+}
 .hidden {
 	display:none
 }

@@ -41,6 +41,17 @@
 			<b>piano</b>: [0] - [9]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>marimba</b>: press [Q][W][E][R][T][Y][U][I][O][P]<br>
 			<b>midi</b>: [M] to play/stop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="midi-file-input"><b>load midi</b>: drag & drop file or click here<br></label>
 		  <input type="file" id="midi-file-input" accept=".mid,.midi" style="display: none;">
+			<select id="midi-selector">
+				<option value="">Select a MIDI file...</option>
+				<option value="./midi/smw_title.mid">Super Mario World - Title</option>
+				<option value="./midi/smw_ovr1.mid">Super Mario World - Overworld 1</option>
+				<option value="./midi/smw_ovr2.mid">Super Mario World - Overworld 2</option>
+				<option value="./midi/smb_over.mid">Super Mario Bros - Overworld</option>
+				<option value="./midi/smb2_over.mid">Super Mario Bros 2 - Overworld</option>
+				<option value="./midi/smb3_ovr1.mid">Super Mario Bros 3 - Overworld 1</option>
+				<option value="./midi/beatmario_-_night_of_nights_gm_wrbk.mid">Touhou - Night of Nights</option>
+				<option value="./midi/bad_apple.mid">Touhou - Bad Apple</option>
+			</select>
 		</header>
 		<div class="focus instrument" id="bongo"></div>
 		<div class="focus instrument" id="keyboard"></div>
